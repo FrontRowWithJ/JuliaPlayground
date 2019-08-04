@@ -1,7 +1,6 @@
 import tkinter as tk
 import numpy
 from Julia import *
-import time
 # import wx
 # Acquiring the dimensions of the screen
 # app = wx.App(False)
@@ -48,7 +47,7 @@ def draw_rect(canvas, x1, y1, width, height, color="white"):
     canvas.create_rectangle(x1, y1, x1 + width, y1 + height, outline=color)
 
 
-def draw_axis(window, canvas, x1, y1, length, ninter, from_, to, isHorizontal, color="white", inter_length=8):
+def draw_axis(canvas, x1, y1, length, ninter, from_, to, isHorizontal, color="white", inter_length=8):
     if isHorizontal:
         canvas.create_line(x1, y1, x1 + length, y1, fill=color)
     else:
@@ -61,7 +60,7 @@ def draw_axis(window, canvas, x1, y1, length, ninter, from_, to, isHorizontal, c
             yBegin = y1 - inter_length / 2
             yEnd = y1 + inter_length / 2
             canvas.create_line(x, yBegin, x, yEnd, fill=color)
-            text = tk.Text(window, fg="white", bg="black",
+            text = tk.Text(canvas, fg="white", bg="black",
                            bd=-1, font=("Arial", 10), exportselection=False)
             n = from_ + margin * i
             text.insert(tk.INSERT, "{}.{}".format(int(n), int(n * 100 % 100)))
@@ -71,7 +70,7 @@ def draw_axis(window, canvas, x1, y1, length, ninter, from_, to, isHorizontal, c
             xBegin = x1 - inter_length / 2
             xEnd = x1 + inter_length / 2
             canvas.create_line(xBegin, y, xEnd, y, fill=color)
-            text = tk.Text(window, fg="white", bg="black",
+            text = tk.Text(canvas, fg="white", bg="black",
                            bd=-1, font=("Arial", 10), exportselection=False)
             n = from_ + margin * (ninter - i - 1)
             text.insert(tk.INSERT, "{}.{}".format(int(n), int(n * 100 % 100)))
@@ -136,28 +135,28 @@ def change_bound(event):
 def change_xmin(event):
     args["mandelXmin"] = event.widget.get()
     mandelbrot(args)
-    draw_axis(window, canvas, W(0.05), H(0.62), screenWidth_1,
+    draw_axis(canvas, W(0.05), H(0.62), screenWidth_1,
               11, args["mandelXmin"], args["mandelXmax"], True)
 
 
 def change_xmax(event):
     args["mandelXmax"] = event.widget.get()
     mandelbrot(args)
-    draw_axis(window, canvas, W(0.05), H(0.62), screenWidth_1,
+    draw_axis(canvas, W(0.05), H(0.62), screenWidth_1,
               11, args["mandelXmin"], args["mandelXmax"], True)
 
 
 def change_ymin(event):
     args["mandelYmin"] = event.widget.get()
     mandelbrot(args)
-    draw_axis(window, canvas, W(0.05) - 8, H(0.01), screenHeight_1,
+    draw_axis(canvas, W(0.05) - 8, H(0.01), screenHeight_1,
               11, args["mandelYmin"], args["mandelYmax"], False)
 
 
 def change_ymax(event):
     args["mandelYmax"] = event.widget.get()
     mandelbrot(args)
-    draw_axis(window, canvas, W(0.05) - 8, H(0.01), screenHeight_1,
+    draw_axis(canvas, W(0.05) - 8, H(0.01), screenHeight_1,
               11, args["mandelYmin"], args["mandelYmax"], False)
 
 
@@ -174,7 +173,7 @@ window = tk.Tk()
 canvas = tk.Canvas(window, height=HEIGHT, width=WIDTH, bg="black")
 canvas.create_line((WIDTH - 1) / 2, 0, (WIDTH - 1) / 2,
                    HEIGHT, fill="white", dash=(4, 4))
-instructionText = tk.Label(window, bg="black", fg="white", font=(
+instructionText = tk.Label(canvas, bg="black", fg="white", font=(
     "Helvetica", 30), wraplength=screenWidth_2, text="Click on the Mandelbrot to Generate the Corresponding Julia Set")
 instructionText.place(x=screen2X + 1, y=screen2Y + 1,
                       width=screenWidth_2 - 1, height=screenHeight_2 - 1)
@@ -204,8 +203,8 @@ args["zExponent"] = 2
 args["niter"] = 256
 args["bound"] = 4.0
 
-draw_axis(window, canvas, W(0.05), H(0.62), screenWidth_1, 11, -2, 1, True)
-draw_axis(window, canvas, W(0.05) - 8, H(0.01),
+draw_axis(canvas, W(0.05), H(0.62), screenWidth_1, 11, -2, 1, True)
+draw_axis(canvas, W(0.05) - 8, H(0.01),
           screenHeight_1, 11, 1.3, -1.3, False)
 matrix = gen_mandelbrot(screenWidth_1, screenHeight_1, args["mandelXmin"], args["mandelXmax"], args["mandelYmin"],
                         args["mandelYmax"], args["zExponent"], args["niter"], args["bound"])
@@ -217,7 +216,7 @@ yOffset = -(H(0.03))
 
 
 # zExponent
-zExponentScale = tk.Scale(window, from_=0, to=3, orient=tk.HORIZONTAL, bg="black", bd=(
+zExponentScale = tk.Scale(canvas, from_=0, to=3, orient=tk.HORIZONTAL, bg="black", bd=(
     0), fg="white", resolution=0.1, troughcolor="black", highlightbackground="orange", label="Z Exponent")
 zExponentScale.bind("<ButtonRelease-1>", change_zExponent)
 draw_rect(canvas, x1, H(0.7, False) + yOffset,
@@ -228,7 +227,7 @@ zExponentScale.set(args["zExponent"])
 
 
 # niter
-niterScale = tk.Scale(window, from_=0, to=1024, orient=tk.HORIZONTAL, bg="black",
+niterScale = tk.Scale(canvas, from_=0, to=1024, orient=tk.HORIZONTAL, bg="black",
                       fg="white", troughcolor="black", highlightbackground="yellow", label="# Iterations")
 niterScale.bind("<ButtonRelease-1>", change_niter)
 draw_rect(canvas, x2 + 1, H(0.7, False) + yOffset,
@@ -239,7 +238,7 @@ niterScale.set(args["niter"])
 
 
 # bound
-boundScale = tk.Scale(window, from_=0, to=4, orient=tk.HORIZONTAL, bg="black", fg="white",
+boundScale = tk.Scale(canvas, from_=0, to=4, orient=tk.HORIZONTAL, bg="black", fg="white",
                       troughcolor="black", resolution=0.1, highlightbackground="pink", label="Bound")
 boundScale.bind("<ButtonRelease-1>", change_bound)
 draw_rect(canvas, x1, H(0.78, False) + yOffset,
@@ -249,7 +248,7 @@ boundScale.place(x=x1 + 1, y=H(0.78, False) + 1 + yOffset,
 boundScale.set(args["bound"])
 
 # xmin
-xminScale = tk.Scale(window, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
+xminScale = tk.Scale(canvas, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
                      troughcolor="black", resolution=0.05, highlightbackground="green", label="xmin")
 xminScale.bind("<ButtonRelease-1>", change_xmin)
 draw_rect(canvas, x2 + 1, H(0.78, False) + yOffset,
@@ -259,7 +258,7 @@ xminScale.place(x=x2 + 2, y=H(0.78) + 1 + yOffset,
 xminScale.set(args["mandelXmin"])
 
 # ymin
-yminScale = tk.Scale(window, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
+yminScale = tk.Scale(canvas, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
                      troughcolor="black", resolution=0.05, highlightbackground="red", label="ymin")
 yminScale.bind("<ButtonRelease-1>", change_ymin)
 draw_rect(canvas, x1, H(0.86, False) + 1 +
@@ -269,7 +268,7 @@ yminScale.place(x=x1 + 1, y=H(0.86, False) + 2 + yOffset,
 yminScale.set(args["mandelYmin"])
 
 # xmax
-xmaxScale = tk.Scale(window, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
+xmaxScale = tk.Scale(canvas, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
                      troughcolor="black", resolution=0.05, highlightbackground="blue", label="xmax")
 xmaxScale.bind("<ButtonRelease-1>", change_xmax)
 draw_rect(canvas, x2 + 1, H(0.86, False) + 1 +
@@ -279,7 +278,7 @@ xmaxScale.place(x=x2 + 2, y=H(0.86, False) + 2 + yOffset,
 xmaxScale.set(args["mandelXmax"])
 
 # ymax
-ymaxScale = tk.Scale(window, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
+ymaxScale = tk.Scale(canvas, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
                      troughcolor="black", resolution=0.05, highlightbackground="purple", label="xmax")
 ymaxScale.bind("<ButtonRelease-1>", change_ymax)
 draw_rect(canvas, x1, H(0.94, False) + 1 + yOffset,
@@ -297,7 +296,7 @@ y1 = screenHeight_2 + screen2Y + H(0.05)
 
 
 # rStart
-rStartScale = tk.Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
+rStartScale = tk.Scale(canvas, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
                        fg="white", troughcolor="black", highlightbackground="red", label="Start Color:Red")
 rStartScale.bind("<ButtonRelease-1>",
                  lambda event: change_color(0, startColor, event.widget.get()))
@@ -307,7 +306,7 @@ rStartScale.set(startColor[0])
 
 
 # rEnd
-rEndScale = tk.Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
+rEndScale = tk.Scale(canvas, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
                      fg="white", troughcolor="black", highlightbackground="red", label="End Color:Red")
 rEndScale.bind("<ButtonRelease-1>",
                lambda event: change_color(0, endColor, event.widget.get()))
@@ -317,7 +316,7 @@ rEndScale.set(endColor[0])
 
 
 # gStart
-gStartScale = tk.Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
+gStartScale = tk.Scale(canvas, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
                        fg="white", troughcolor="black", highlightbackground="green", label="Start Color:Green")
 gStartScale.bind("<ButtonRelease-1>",
                  lambda event: change_color(1, startColor, event.widget.get()))
@@ -327,7 +326,7 @@ gStartScale.set(startColor[1])
 
 
 # gEnd
-gEndScale = tk.Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
+gEndScale = tk.Scale(canvas, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
                      fg="white", troughcolor="black", highlightbackground="green", label="End Color:Green")
 gEndScale.bind("<ButtonRelease-1>",
                lambda event: change_color(1, endColor, event.widget.get()))
@@ -336,7 +335,7 @@ gEndScale.place(x=x2 + 2, y=y1 + height + 2, width=width-1, height=height-1)
 gEndScale.set(endColor[1])
 
 # bStart
-bStartScale = tk.Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
+bStartScale = tk.Scale(canvas, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
                        fg="white", troughcolor="black", highlightbackground="blue", label="Start Color:Blue")
 bStartScale.bind("<ButtonRelease-1>",
                  lambda event: change_color(2, startColor, event.widget.get()))
@@ -346,7 +345,7 @@ bStartScale.place(x=x1 + 1, y=y1 + (height + 1) * 2 +
 bStartScale.set(startColor[2])
 
 # bEnd
-bEndScale = tk.Scale(window, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
+bEndScale = tk.Scale(canvas, from_=0, to=255, orient=tk.HORIZONTAL, bg="black",
                      fg="white", troughcolor="black", highlightbackground="blue", label="End Color:Blue")
 bEndScale.bind("<ButtonRelease-1>",
                lambda event: change_color(2, endColor, event.widget.get()))
