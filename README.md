@@ -19,4 +19,4 @@ Julia Playground is an interactive gui (tkinter), built in python that allows th
 `Linux/macOS:` If you have pip installed, open the cli and type `pip install [library name]`
 
 #### Issues
-One major issue I have found is finding a fast enough image renderer whcih could allow dynamically updating the julia set with a reasonable framerate. If you could suggest any, please feel free to email me at `adebusum@tcd.ie`
+One major issue I have found is finding a fast enough image renderer that could allow dynamically updating the julia set with a reasonable framerate. If you could suggest any, please feel free to email me at `adebusum@tcd.ie`
