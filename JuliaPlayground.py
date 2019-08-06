@@ -73,7 +73,6 @@ def draw_axis(canvas, x1, y1, length, ninter, from_, to, isHorizontal, color="wh
             text = tk.Text(canvas, fg="white", bg="black",
                            bd=-1, font=("Arial", 10), exportselection=False)
             n = to - (margin * i)
-            print(i, n)
             text.insert(tk.INSERT, "{}.{}".format(int(n), str(int(abs(n) * 100 % 100)).zfill(2)))
             w = 30
             text.place(x=xEnd - w - inter_length,
