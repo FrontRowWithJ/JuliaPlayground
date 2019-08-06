@@ -63,7 +63,7 @@ def draw_axis(canvas, x1, y1, length, ninter, from_, to, isHorizontal, color="wh
             text = tk.Text(canvas, fg="white", bg="black",
                            bd=-1, font=("Arial", 10), exportselection=False)
             n = from_ + margin * i
-            text.insert(tk.INSERT, "{}.{}".format(int(n), int(n * 100 % 100)))
+            text.insert(tk.INSERT, "{}.{}".format(int(n), str(int(abs(n) * 100 % 100)).zfill(2)))
             text.place(x=x, y=yEnd, width=offset, height=30)
         else:
             y = y1 + offset * i
@@ -72,8 +72,9 @@ def draw_axis(canvas, x1, y1, length, ninter, from_, to, isHorizontal, color="wh
             canvas.create_line(xBegin, y, xEnd, y, fill=color)
             text = tk.Text(canvas, fg="white", bg="black",
                            bd=-1, font=("Arial", 10), exportselection=False)
-            n = from_ + margin * (ninter - i - 1)
-            text.insert(tk.INSERT, "{}.{}".format(int(n), int(n * 100 % 100)))
+            n = to - (margin * i)
+            print(i, n)
+            text.insert(tk.INSERT, "{}.{}".format(int(n), str(int(abs(n) * 100 % 100)).zfill(2)))
             w = 30
             text.place(x=xEnd - w - inter_length,
                        y=y - inter_length, width=w)
@@ -203,9 +204,9 @@ args["zExponent"] = 2
 args["niter"] = 256
 args["bound"] = 4.0
 
-draw_axis(canvas, W(0.05), H(0.62), screenWidth_1, 11, -2, 1, True)
+draw_axis(canvas, W(0.05), H(0.62), screenWidth_1, 11, args["mandelXmin"], args["mandelXmax"], True)
 draw_axis(canvas, W(0.05) - 8, H(0.01),
-          screenHeight_1, 11, 1.3, -1.3, False)
+          screenHeight_1, 11, args["mandelYmin"], args["mandelYmax"], False)
 matrix = gen_mandelbrot(screenWidth_1, screenHeight_1, args["mandelXmin"], args["mandelXmax"], args["mandelYmin"],
                         args["mandelYmax"], args["zExponent"], args["niter"], args["bound"])
 scaleWidth = W(0.2)
@@ -279,7 +280,7 @@ xmaxScale.set(args["mandelXmax"])
 
 # ymax
 ymaxScale = tk.Scale(canvas, from_=-3, to=3, orient=tk.HORIZONTAL, bg="black", fg="white",
-                     troughcolor="black", resolution=0.05, highlightbackground="purple", label="xmax")
+                     troughcolor="black", resolution=0.05, highlightbackground="purple", label="ymax")
 ymaxScale.bind("<ButtonRelease-1>", change_ymax)
 draw_rect(canvas, x1, H(0.94, False) + 1 + yOffset,
           scaleWidth, scaleHeight, "purple")
