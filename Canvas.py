@@ -189,7 +189,6 @@ class Canvas:
                 text = tk.Text(self.canvas, fg="white", bg="black",
                                bd=-1, font=("Arial", 9), exportselection=False)
                 n = to - (margin * i)
-                print(n)
                 text.insert(tk.INSERT, "{:10.2f}".format(n))
                 w = 50
                 text.place(x=xEnd - w - inter_length,
