@@ -1,3 +1,4 @@
+"""Utility functions for calculating the values for julia sets and the mandelbrot set."""
 import numpy
 from numba import int32, float32, float64, guvectorize
 
@@ -34,6 +35,7 @@ def _get_julia_color(zr, zi, cr, ci, zExponent, niter, bound, res):
 
 
 def gen_mandelbrot(width, height, xmin, xmax, ymin, ymax, zExponent, niter, bound):
+    """Generate the mandelbrot set. Returns a 2d numpy integer array."""
     res = numpy.zeros((height, width), numpy.int32)
     w = numpy.linspace(xmin, xmax, width)
     h = numpy.linspace(ymin, ymax, height)
@@ -43,6 +45,7 @@ def gen_mandelbrot(width, height, xmin, xmax, ymin, ymax, zExponent, niter, boun
 
 
 def gen_julia_set(width, height, x, y, xmin, xmax, ymin, ymax, zExponent, niter, bound):
+    """Generate the julia set. Returns a 2d numpy integer array."""
     res = numpy.zeros((height, width), numpy.int32)
     w = numpy.linspace(xmin, xmax, width)
     h = numpy.linspace(ymin, ymax, height)
