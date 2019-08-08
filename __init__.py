@@ -1,8 +1,8 @@
 """Run the JuliaPlayground module."""
-from JuliaPlayground1 import JuliaPlayground
+from JuliaPlayground import JuliaPlayground
 from Canvas import Canvas
 
 
-
-jp = JuliaPlayground(0, 0)
+# The initial values of this function don't matter
+jp = JuliaPlayground()
 c = Canvas(1000, 700, jp)
