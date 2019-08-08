@@ -14,13 +14,13 @@ class Canvas:
         self.colorCodeStart = [0x55, 0x1A, 0x8B]
         self.colorCodeEnd = [0x00, 0xFF, 0xFF]
         self.colors = [0 for i in range(0xFF + 1)]
-        self.screenWidth1 = self._W(0.4, False)
-        self.screenWidth2 = self._W(0.4, False)
-        self.screenHeight1 = self._H(0.6, False)
-        self.screenHeight2 = self._H(0.6, False)
-        self.screen1x = (self.WIDTH // 2 - self.screenWidth1) // 2
+        self.screen1Width = self._W(0.4, False)
+        self.screen2Width = self._W(0.4, False)
+        self.screen1Height = self._H(0.6, False)
+        self.screen2Height = self._H(0.6, False)
+        self.screen1x = (self.WIDTH // 2 - self.screen1Width) // 2
         self.screen2x = (self.WIDTH // 2 -
-                         self.screenWidth2) // 2 + self.WIDTH // 2
+                         self.screen2Width) // 2 + self.WIDTH // 2
         self.screen1y = self._H(0.01, False)
         self.screen2y = self.screen1y  # self._H(0.1, False)
         self.window = tk.Tk()
@@ -28,9 +28,9 @@ class Canvas:
         self.canvas = tk.Canvas(
             height=self.HEIGHT, width=self.WIDTH, bg="black")
         self.imageLeft = tk.PhotoImage(
-            width=self.screenWidth1 - 1, height=self.screenHeight1 - 1)
+            width=self.screen1Width - 1, height=self.screen1Height - 1)
         self.imageRight = tk.PhotoImage(
-            width=self.screenWidth2 - 1, height=self.screenHeight2 - 1)
+            width=self.screen2Width - 1, height=self.screen2Height - 1)
         self.scaleWidth = self._W(0.2)
         self.scaleHeight = self._H(0.08)
         self.scaleX1 = self._W(0.05, False)
@@ -38,18 +38,18 @@ class Canvas:
         self.yOffset = -self._H(0.03)
         self.scaleDict = {}
         # Calling set up functions
-        self.jp.set_width(self.screenWidth1)
-        self.jp.set_height(self.screenHeight1)
+        self.jp.set_width(self.screen1Width)
+        self.jp.set_height(self.screen1Height)
         self._update_colors()
         self._gen_instuction_text()
         self.canvas.create_line(self.WIDTH / 2, 0, self.WIDTH / 2, self.HEIGHT,
                                 fill="white", dash=(4, 4))
         self.instructionText.place(
-            x=self.screen2x + 1, y=self.screen2y + 1, width=self.screenWidth2 - 1, height=self.screenHeight2 - 1)
-        self.draw_rect(self.screen1x, self.screen1y, self.screenWidth1,
-                       self.screenHeight1, "red")
-        self.draw_rect(self.screen2x, self.screen2y, self.screenWidth2,
-                       self.screenHeight2, "blue")
+            x=self.screen2x + 1, y=self.screen2y + 1, width=self.screen2Width - 1, height=self.screen2Height - 1)
+        self.draw_rect(self.screen1x, self.screen1y, self.screen1Width,
+                       self.screen1Height, "red")
+        self.draw_rect(self.screen2x, self.screen2y, self.screen2Width,
+                       self.screen2Height, "blue")
         self.canvas.create_image(
             self.screen1x + 1, self.screen1y + 1, image=self.imageLeft, anchor=tk.NW)
         self.canvas.create_image(self.screen2x + 1, self.screen2y + 1,
@@ -58,9 +58,9 @@ class Canvas:
             "<Button-1>", lambda event: self._draw_julia(event.x, event.y))
         self.canvas.pack()
         self.draw_axis(self._W(0.05), self._H(0.62),
-                       self.screenWidth1, 11, jp.xmin_mandel, jp.xmax_mandel)
+                       self.screen1Width, 11, jp.xmin_mandel, jp.xmax_mandel)
         self.draw_axis(self._W(0.05) - 8, self._H(0.01),
-                       self.screenHeight1, 11, jp.ymin_mandel, jp.ymax_mandel, False)
+                       self.screen1Height, 11, jp.ymin_mandel, jp.ymax_mandel, False)
         self.draw_fractal(self.jp.mandelbrot())
 
         # zExponent
@@ -92,7 +92,7 @@ class Canvas:
 
         x1 = self.screen2x
         x2 = self.screen2x + self.scaleWidth + 1
-        y = self.screenHeight2 + self.screen2y + self._H(0.05)
+        y = self.screen2Height + self.screen2y + self._H(0.05)
         yOff = self.scaleHeight + 1
 
         # Red start
@@ -159,7 +159,7 @@ class Canvas:
     def _gen_instuction_text(self):
         """Draw the instruction text that tells the user how to generate a julia set from the mandelbrot set."""
         self.instructionText = tk.Label(self.canvas, bg="black", fg="white", font=(
-            "Helvetica", 30), wraplength=self.screenWidth2, text="Click on the Mandelbrot to Generate the Corresponding Julia Set")
+            "Helvetica", 30), wraplength=self.screen2Width, text="Click on the Mandelbrot to Generate the Corresponding Julia Set")
 
     def draw_axis(self, x1, y1, length, ninter, from_, to, isHorizontal=True, color="white", inter_length=8):
         """Draw a horizontal or vertical axis of length 'length' from the point (x1, y1) width 'ninter' intervals in the range 'from_' - 'to'."""
@@ -212,9 +212,9 @@ class Canvas:
         self.draw_fractal(fractals[0])
         self.draw_fractal(fractals[1], False)
         self.draw_axis(self._W(0.05), self._H(0.62),
-                       self.screenWidth1, 11, self.jp.xmin_mandel, self.jp.xmax_mandel)
+                       self.screen1Width, 11, self.jp.xmin_mandel, self.jp.xmax_mandel)
         self.draw_axis(self._W(0.05) - 8, self._H(0.01),
-                       self.screenHeight1, 11, self.jp.ymin_mandel, self.jp.ymax_mandel, False)
+                       self.screen1Height, 11, self.jp.ymin_mandel, self.jp.ymax_mandel, False)
 
     def _gen_scale(self, scaleName, from_, to, color, label, xpos, ypos, res, funcName, startValue):
         """Generate a scale that alters the values for the fractals."""
@@ -239,13 +239,16 @@ class Canvas:
         self.scaleDict[scaleName].set(array[index])
 
     def _draw_julia(self, xpos, ypos):
-        if xpos > self.screen1x and xpos < (self.screen1x + self.screenWidth1) and ypos > self.screen1y and ypos < (self.screen1y + self.screenHeight1):
+        if xpos > self.screen1x and xpos < (self.screen1x + self.screen1Width) and ypos > self.screen1y and ypos < (self.screen1y + self.screen1Height):
             if self.instructionText:
                 self.instructionText.destroy()
                 self.instructionText = None
-            self.cx = self._translate(xpos, self.screen1x, self.screen1x +
-                                      self.screenWidth1, self.jp.xmin_mandel, self.jp.xmax_mandel)
-            self.cy = self._translate(ypos, self.screen1y, self.screen1y +
-                                      self.screenHeight1, self.jp.ymin_mandel, self.jp.ymin_mandel)
+            x = self._translate(xpos, self.screen1x, self.screen1x +
+                                      self.screen1Width, self.jp.xmin_mandel, self.jp.xmax_mandel)
+            y = self._translate(ypos, self.screen1y, self.screen1y +
+                                      self.screen1Height, self.jp.ymin_mandel, self.jp.ymax_mandel)
+            self.cx = self._translate(x, self.jp.xmin_mandel, self.jp.xmax_mandel, self.jp.xmin_julia, self.jp.xmax_julia)
+            self.cy = self._translate(y, self.jp.ymin_mandel, self.jp.ymax_mandel, self.jp.ymin_julia, self.jp.ymax_julia)
+            
             fractal = self.jp.julia(self.cx, self.cy)
             self.draw_fractal(fractal, False)
