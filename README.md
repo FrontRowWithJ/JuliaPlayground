@@ -3,8 +3,8 @@ Julia Playground is an interactive gui (tkinter), built in python that allows th
 
 ![Screenshot of JuliaPlayground](https://github.com/FrontRowWithJ/JuliaPlayground/blob/master/Julia_PlayGround_Screenshot.png)
 #### Use
-`Windows:` Double-click on JuliaPlayground.py or if you're using cmd, navigate to the file directiory where the script is located and type: `python JuliaPlayground.py` _(I recommend the later approach because it will be easier to figure out what dependencies are missing.)_  
-`Linux/macOS: ` Open the cli and type: `python3 JuliaPlayground.py`
+`Windows:` Double-click on `__init__.py` or if you're using cmd, navigate to the file directiory where the scripts are located and type: `python __init__.py` _(I recommend the later approach because it will be easier to figure out what dependencies are missing.)_  
+`Linux/macOS: ` Open the cli and type: `python3 __init__.py`
   
 #### Dependencies
 * `Python 3 or later`
