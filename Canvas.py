@@ -1,6 +1,5 @@
 """Canvas Class."""
 import tkinter as tk
-import JuliaPlayground1
 
 
 class Canvas:
@@ -20,9 +19,10 @@ class Canvas:
         self.screenHeight1 = self._H(0.6, False)
         self.screenHeight2 = self._H(0.6, False)
         self.screen1x = (self.WIDTH // 2 - self.screenWidth1) // 2
-        self.screen2x = (self.WIDTH // 2 - self.screenWidth2) // 2 + self.WIDTH // 2
+        self.screen2x = (self.WIDTH // 2 -
+                         self.screenWidth2) // 2 + self.WIDTH // 2
         self.screen1y = self._H(0.01, False)
-        self.screen2y = self.screen1y#self._H(0.1, False)
+        self.screen2y = self.screen1y  # self._H(0.1, False)
         self.window = tk.Tk()
         self.instructionText = None
         self.canvas = tk.Canvas(
@@ -135,8 +135,9 @@ class Canvas:
         """Update the color array with new start and begin color values."""
         for i in range(0xFF + 1):
             self.colors[i] = "#" + hex(int(self._translate(i, 0, 255, self.colorCodeStart[0], self.colorCodeEnd[0])))[2:].zfill(2) \
-            + hex(int(self._translate(i, 0, 255, self.colorCodeStart[1], self.colorCodeEnd[1])))[2:].zfill(2) \
-            + hex(int(self._translate(i, 0, 255, self.colorCodeStart[2], self.colorCodeEnd[2])))[2:].zfill(2) + " "
+                + hex(int(self._translate(i, 0, 255, self.colorCodeStart[1], self.colorCodeEnd[1])))[2:].zfill(2) \
+                + hex(int(self._translate(i, 0, 255,
+                                          self.colorCodeStart[2], self.colorCodeEnd[2])))[2:].zfill(2) + " "
 
     def draw_fractal(self, fractal, isImageLeft=True):
         """Convert the fractal matrix to color codes and draw them to the canvas."""
@@ -239,8 +240,8 @@ class Canvas:
             self.instructionText = None
         if xpos > self.screen1x and xpos < self.screen1x + self.screenWidth1 and ypos > self.screen1y and ypos < self.screen1y + self.screenHeight2:
             self.cx = self._translate(xpos, self.screen1x, self.screen1x +
-                                self.screenWidth1, self.jp.xmin_julia, self.jp.xmax_julia)
+                                      self.screenWidth1, self.jp.xmin_julia, self.jp.xmax_julia)
             self.cy = self._translate(ypos, self.screen1y, self.screen1y +
-                                self.screenHeight1, self.jp.ymin_julia, self.jp.ymax_julia)
+                                      self.screenHeight1, self.jp.ymin_julia, self.jp.ymax_julia)
             fractal = self.jp.julia(self.cx, self.cy)
             self.draw_fractal(fractal, False)
