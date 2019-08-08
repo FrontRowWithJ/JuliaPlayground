@@ -84,4 +84,3 @@ class JuliaPlayground:
     def set_height(self, height):
         """Set the number of colors per column."""
         self.height = height
-
