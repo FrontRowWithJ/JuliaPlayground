@@ -79,7 +79,7 @@ class Canvas:
                         self._H(0.78, False) + self.yOffset, 0.05, "update_xmin_mandel", self.jp.xmin_mandel)
 
         # ymin
-        self._gen_scale("ymin", -3, 3, "red", "xmin", self.scaleX1,
+        self._gen_scale("ymin", -3, 3, "red", "ymin", self.scaleX1,
                         self._H(0.86, False) + 1 + self.yOffset, 0.05, "update_ymin_mandel", self.jp.ymin_mandel)
 
         # xmax
@@ -94,6 +94,7 @@ class Canvas:
         x2 = self.screen2x + self.scaleWidth + 1
         y = self.screenHeight2 + self.screen2y + self._H(0.05)
         yOff = self.scaleHeight + 1
+
         # Red start
         self._gen_color_scale("redStart", "red", "Start ColorCode: Red", 0, self.colorCodeStart,
                               x1, y)
@@ -175,7 +176,7 @@ class Canvas:
                 yEnd = y1 + inter_length / 2
                 self.canvas.create_line(x, yBegin, x, yEnd, fill=color)
                 text = tk.Text(self.canvas, fg="white", bg="black",
-                               bd=-1, font=("Arial", 10), exportselection=False)
+                               bd=-1, font=("Arial", 9), exportselection=False)
                 n = from_ + margin * i
                 text.insert(tk.INSERT, "{}.{}".format(
                     int(n), str(int(abs(n) * 100 % 100)).zfill(2)))
@@ -186,11 +187,11 @@ class Canvas:
                 xEnd = x1 + inter_length / 2
                 self.canvas.create_line(xBegin, y, xEnd, y, fill=color)
                 text = tk.Text(self.canvas, fg="white", bg="black",
-                               bd=-1, font=("Arial", 10), exportselection=False)
+                               bd=-1, font=("Arial", 9), exportselection=False)
                 n = to - (margin * i)
-                text.insert(tk.INSERT, "{}.{}".format(
-                    int(n), str(int(abs(n) * 100 % 100)).zfill(2)))
-                w = 30
+                print(n)
+                text.insert(tk.INSERT, "{:10.2f}".format(n))
+                w = 50
                 text.place(x=xEnd - w - inter_length,
                            y=y - inter_length, width=w)
 
@@ -211,6 +212,10 @@ class Canvas:
         fractals = updateFunc(value)
         self.draw_fractal(fractals[0])
         self.draw_fractal(fractals[1], False)
+        self.draw_axis(self._W(0.05), self._H(0.62),
+                       self.screenWidth1, 11, self.jp.xmin_mandel, self.jp.xmax_mandel)
+        self.draw_axis(self._W(0.05) - 8, self._H(0.01),
+                       self.screenHeight1, 11, self.jp.ymin_mandel, self.jp.ymax_mandel, False)
 
     def _gen_scale(self, scaleName, from_, to, color, label, xpos, ypos, res, funcName, startValue):
         """Generate a scale that alters the values for the fractals."""
@@ -235,13 +240,13 @@ class Canvas:
         self.scaleDict[scaleName].set(array[index])
 
     def _draw_julia(self, xpos, ypos):
-        if self.instructionText:
-            self.instructionText.destroy()
-            self.instructionText = None
-        if xpos > self.screen1x and xpos < self.screen1x + self.screenWidth1 and ypos > self.screen1y and ypos < self.screen1y + self.screenHeight2:
+        if xpos > self.screen1x and xpos < (self.screen1x + self.screenWidth1) and ypos > self.screen1y and ypos < (self.screen1y + self.screenHeight1):
+            if self.instructionText:
+                self.instructionText.destroy()
+                self.instructionText = None
             self.cx = self._translate(xpos, self.screen1x, self.screen1x +
-                                      self.screenWidth1, self.jp.xmin_julia, self.jp.xmax_julia)
+                                      self.screenWidth1, self.jp.xmin_mandel, self.jp.xmax_mandel)
             self.cy = self._translate(ypos, self.screen1y, self.screen1y +
-                                      self.screenHeight1, self.jp.ymin_julia, self.jp.ymax_julia)
+                                      self.screenHeight1, self.jp.ymin_mandel, self.jp.ymin_mandel)
             fractal = self.jp.julia(self.cx, self.cy)
             self.draw_fractal(fractal, False)
